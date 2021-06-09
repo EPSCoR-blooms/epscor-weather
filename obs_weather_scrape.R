@@ -1,5 +1,5 @@
 # written by B. Steele (steeleb@caryinstitute.org)
-# last modified 07June2021
+# last modified 09June2021
 
 # this script scrapes the 4 days of observed weather data from the NOAA website
 
@@ -15,6 +15,7 @@ sun_url <- "https://w1.weather.gov/data/obhistory/KLEB.html"
 aub_url <- "https://w1.weather.gov/data/obhistory/KLEW.html"
 grt_url <- "https://w1.weather.gov/data/obhistory/KWVL.html"
 # sab_url <- also KLEW
+# pan_url <- also KLEW
 ri_url <- "https://w1.weather.gov/data/obhistory/KOQU.html"
 wat_url <-  "https://w1.weather.gov/data/obhistory/KCUB.html"
 mur_url <- "https://w1.weather.gov/data/obhistory/KCAE.html"
