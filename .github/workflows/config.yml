@@ -28,7 +28,7 @@ jobs:
         git config --local user.email "steeleb@caryinstitute.org"
         git add datastore/*
         git commit -am "gh action weather grab $(date)"
-        git push origin cron-test
+        git push origin main
       env: 
         REPO_KEY: ${{secrets.GITHUB_TOKEN}}
         username: github-actions
