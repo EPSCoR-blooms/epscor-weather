@@ -1,0 +1,37 @@
+name: gather weather daily
+
+#when it should run
+on:
+  schedule:
+    - cron: "30 6 * * *" #run everyday at utc 6:30
+
+#create jobs    
+jobs:
+  obs-weather: 
+    runs-on: windows-2016
+    steps: 
+    # load repo
+    - uses: actions/checkout@master
+    #- uses: r-lib/actions/setup-r@master
+    #install packages
+    - name: Install packages
+      run: |
+        R -e 'install.packages('tidyverse')'
+        R -e 'install.packages('rvest')'
+    - name: observed weather
+      run: |
+        Rscript obs_weather_scrape.R
+        Rscript pred_weather_scrape.R
+    - name: Commit files
+      run: |
+        git config --local user.name actions-user
+        git config --local user.email "steeleb@caryinstitute.org"
+        git add datastore/*
+        git commit -am "gh action weather grab $(date)"
+        git push origin main
+      env: 
+        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+        username: github-actions
+    
+
+  
