@@ -18,8 +18,8 @@ jobs:
     #install packages
     - name: Install packages
       run: |
-        R -e 'install.packages("tidyverse")'
-        R -e 'install.packages("rvest")'
+        R 'install.packages("tidyverse")'
+        R 'install.packages("rvest")'
     - name: observed weather
       run: |
         Rscript obs_weather_scrape.R
