@@ -2,10 +2,10 @@ name: gather weather daily
 
 #when it should run
 on:
-  #schedule:
-    #- cron: "30 6 * * *" #run everyday at utc 6:30
-  push:
-    branches: main
+  schedule:
+    - cron: "30 6 * * *" #run everyday at utc 6:30
+  #push:
+    #branches: main
 
 #create jobs    
 jobs:
@@ -18,8 +18,9 @@ jobs:
     #install packages
     - name: Install packages
       run: |
-        Rscript -e 'install.packages("tidyverse")'
-        Rscript -e 'install.packages("rvest")'
+        Rscript -e 'install.packages("remotes")'
+        Rscript -e 'remotes::install_cran("tidyverse")'
+        Rscript -e 'remotes::install_cran("rvest")'
     - name: Scraping weather
       run: |
         Rscript obs_weather_scrape.R
