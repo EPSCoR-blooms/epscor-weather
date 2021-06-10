@@ -4,7 +4,8 @@
 # this script scrapes the 4 days of observed weather data from the NOAA website
 
 #load packages
-library(tidyverse)
+library(magrittr)
+library(dplyr)
 library(rvest)
 
 #set save directory
@@ -72,8 +73,8 @@ weather_now <- weather_now %>%
          date = as.character(date))
 str(weather_now)
 
-#join the data together with an indicator of download date, in case data changes
-collated_weather <- full_join(collated_weather, weather_now)
-write.csv(collated_weather, file.path(dir, paste0(obs_data_list[i])), row.names = F)
+# #join the data together with an indicator of download date, in case data changes
+# collated_weather <- full_join(collated_weather, weather_now)
+# write.csv(collated_weather, file.path(dir, paste0(obs_data_list[i])), row.names = F)
 
 }

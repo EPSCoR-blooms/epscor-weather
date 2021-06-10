@@ -12,20 +12,27 @@ jobs:
   weather: 
     runs-on: windows-2016
     steps: 
+
     # load repo
     - uses: actions/checkout@master
+
+    # load r
     - uses: r-lib/actions/setup-r@master
-    #install packages
+
+    # install packages
     - name: Install packages
       run: |
-        install.packages("tidyverse")
+        install.packages("magrittr")
+        install.packages("dplyr")
         install.packages("rvest")
       shell: Rscript {0}
+
     - name: Scrape and compile weather
       run: |
         source('R/obs_weather_scrape.R')
         source('R/pred_weather_scrape.R')
       shell: Rscript {0}
+      
     - name: Commit files
       run: |
         git config --local user.name actions-user

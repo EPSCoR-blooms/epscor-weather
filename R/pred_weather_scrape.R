@@ -4,7 +4,8 @@
 # this script scrapes the 2 days of predicted weather ahead of download day
 
 #load packages
-library(tidyverse)
+library(magrittr)
+library(dplyr)
 library(rvest)
 
 #set save directory
