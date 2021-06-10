@@ -9,7 +9,7 @@ on:
 
 #create jobs    
 jobs:
-  obs-weather: 
+  weather: 
     runs-on: windows-2016
     steps: 
     # load repo
@@ -18,9 +18,9 @@ jobs:
     #install packages
     - name: Install packages
       run: |
-        R 'install.packages("tidyverse")'
-        R 'install.packages("rvest")'
-    - name: observed weather
+        Rscript -e 'install.packages("tidyverse")'
+        Rscript -e 'install.packages("rvest")'
+    - name: Scraping weather
       run: |
         Rscript obs_weather_scrape.R
         Rscript pred_weather_scrape.R
