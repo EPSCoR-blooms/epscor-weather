@@ -5,7 +5,6 @@
 
 #load packages
 library(magrittr)
-library(dplyr)
 library(rvest)
 
 #set save directory
@@ -37,7 +36,7 @@ collated_weather <- read.csv(file.path(dir,  obs_data_list[i]),
 
 #read html, select table, format to dataframe
 weather_now <- as.data.frame(html_table(html_nodes(read_html(url_list[i]), 'table')[4], header = T)) %>% 
-    filter(!grepl('date', x = Date, ignore.case = T)) 
+    dplyr::filter(!grepl('date', x = Date, ignore.case = T)) 
 
 #rename columns
 for(j in 1:ncol(weather_now)) {
@@ -69,12 +68,12 @@ for(k in 1:nrow(weather_now)) {
 
 # mutate all columns to as.character
 weather_now <- weather_now %>% 
-  mutate(download_date = as.character(download_date),
+  dplyr::mutate(download_date = as.character(download_date),
          date = as.character(date))
 str(weather_now)
 
-# #join the data together with an indicator of download date, in case data changes
-# collated_weather <- full_join(collated_weather, weather_now)
-# write.csv(collated_weather, file.path(dir, paste0(obs_data_list[i])), row.names = F)
+#join the data together with an indicator of download date, in case data changes
+collated_weather <- dplyr::full_join(collated_weather, weather_now)
+write.csv(collated_weather, file.path(dir, paste0(obs_data_list[i])), row.names = F)
 
 }

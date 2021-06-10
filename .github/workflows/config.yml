@@ -24,6 +24,7 @@ jobs:
       run: |
         install.packages("magrittr")
         install.packages("dplyr")
+        install.packages("tibble")
         install.packages("rvest")
       shell: Rscript {0}
 

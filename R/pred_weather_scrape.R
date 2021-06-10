@@ -5,8 +5,9 @@
 
 #load packages
 library(magrittr)
-library(dplyr)
 library(rvest)
+library(tibble)
+library(dplyr)
 
 #set save directory
 dir <- 'datastore/for_weather/'
