@@ -21,14 +21,14 @@ jobs:
         Rscript -e 'install.packages("remotes")'
         Rscript -e 'remotes::install_cran("tidyverse")'
         Rscript -e 'remotes::install_cran("rvest")'
-    - name: Scraping weather
+    - name: Scrape and compile weather
       run: |
         Rscript obs_weather_scrape.R
         Rscript pred_weather_scrape.R
     - name: Commit files
       run: |
         git config --local user.name actions-user
-        git config --local user.email "steeleb@caryinstitute.org"
+        git config --local user.email "actions@github.com"
         git add datastore/*
         git commit -am "gh action weather grab $(date)"
         git push origin main

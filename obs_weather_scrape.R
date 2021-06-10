@@ -14,6 +14,7 @@ dir <- 'datastore/obs_weather/'
 sun_url <- "https://w1.weather.gov/data/obhistory/KLEB.html"
 aub_url <- "https://w1.weather.gov/data/obhistory/KLEW.html"
 grt_url <- "https://w1.weather.gov/data/obhistory/KWVL.html"
+# pan_url <- also KWVL
 # sab_url <- also KLEW
 # pan_url <- also KLEW
 ri_url <- "https://w1.weather.gov/data/obhistory/KOQU.html"
