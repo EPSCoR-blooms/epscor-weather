@@ -2,8 +2,10 @@ name: gather weather daily
 
 #when it should run
 on:
-  schedule:
-    - cron: "30 6 * * *" #run everyday at utc 6:30
+  #schedule:
+    #- cron: "30 6 * * *" #run everyday at utc 6:30
+  push:
+    branches: main
 
 #create jobs    
 jobs:
@@ -12,7 +14,7 @@ jobs:
     steps: 
     # load repo
     - uses: actions/checkout@master
-    #- uses: r-lib/actions/setup-r@master
+    - uses: r-lib/actions/setup-r@master
     #install packages
     - name: Install packages
       run: |
