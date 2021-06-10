@@ -18,13 +18,14 @@ jobs:
     #install packages
     - name: Install packages
       run: |
-        Rscript -e 'install.packages("remotes")'
-        Rscript -e 'remotes::install_cran("tidyverse")'
-        Rscript -e 'remotes::install_cran("rvest")'
+        install.packages("tidyverse")
+        install.packages("rvest")
+      shell: Rscript {0}
     - name: Scrape and compile weather
       run: |
-        Rscript obs_weather_scrape.R
-        Rscript pred_weather_scrape.R
+        source('R/obs_weather_scrape.R')
+        source('R/pred_weather_scrape.R')
+      shell: Rscript {0}
     - name: Commit files
       run: |
         git config --local user.name actions-user
@@ -32,9 +33,9 @@ jobs:
         git add datastore/*
         git commit -am "gh action weather grab $(date)"
         git push origin main
-      env: 
-        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-        username: github-actions
+#      env: 
+#        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+#        username: github-actions
     
 
   
