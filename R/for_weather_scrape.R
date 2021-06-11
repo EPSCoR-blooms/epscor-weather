@@ -11,6 +11,7 @@ library(dplyr)
 
 #set save directory
 dir <- 'datastore/for_weather/'
+tmpdir <- 'datastore/for_weather/tmp/'
 
 #read lat/longs
 
@@ -43,8 +44,8 @@ Sys.setenv(TZ='Etc/GMT+5') #force TZ to EST no DST for download
 
 for(i in 1:length(url_list)) {
 
-#read in historical data
-forecast_template <- read.csv(file.path(dir,  for_data_list[i]),
+#read in template
+forecast_template <- read.csv(file.path(tmpdir,  for_data_list[i]),
                          colClasses = 'character')
 forecast_now = NULL
 attempt = 1 #set attempt at first attempt

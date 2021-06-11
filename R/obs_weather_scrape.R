@@ -16,7 +16,7 @@ dir <- 'datastore/obs_weather/'
 sun_url <- "https://w1.weather.gov/data/obhistory/KLEB.html"
 aub_url <- "https://w1.weather.gov/data/obhistory/KLEW.html"
 grt_url <- "https://w1.weather.gov/data/obhistory/KWVL.html"
-# pan_url <- also KWVL
+# chn_url <- also KWVL
 # sab_url <- also KLEW
 # pan_url <- also KLEW
 ri_url <- "https://w1.weather.gov/data/obhistory/KOQU.html"
@@ -24,7 +24,7 @@ wat_url <-  "https://w1.weather.gov/data/obhistory/KCUB.html"
 mur_url <- "https://w1.weather.gov/data/obhistory/KCAE.html"
 
 url_list <- c(sun_url, aub_url, grt_url, ri_url, wat_url, mur_url) 
-obs_data_list <- c('sun-obs.csv', 'aub-obs.csv', 'grt-obs.csv', 'ri-obs.csv', 'wat-obs.csv', 'mur-obs.csv') 
+obs_data_list <- c('KLEB-obs.csv', 'KLEW-obs.csv', 'KWVL-obs.csv', 'KOQU-obs.csv', 'KCUB-obs.csv', 'KCAE-obs.csv') 
 station_list <- c('KLEB', 'KLEW', 'KWVL', 'KOQU', 'KCUB', 'KCAE') 
 
 tempnames <- c('day', 'time', "wind_mph", "vis_mi", "weather", "sky_cond", "air_temp_F", "dewpoint_F", "air_temp_max_6h_F", 
