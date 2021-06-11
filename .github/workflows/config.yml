@@ -2,8 +2,8 @@ name: gather weather daily
 
 #when it should run
 on:
-  #schedule:
-    #- cron: "30 6 * * *" #run everyday at utc 6:30
+  schedule:
+    - cron: "30 6 * * *" #run everyday at utc 6:30
   push:
     branches: main
 
@@ -26,6 +26,7 @@ jobs:
         install.packages("dplyr")
         install.packages("tibble")
         install.packages("rvest")
+        install.packages("lubridate")
       shell: Rscript {0}
 
     - name: Scrape and compile weather
@@ -41,9 +42,6 @@ jobs:
         git add datastore/*
         git commit -am "gh action weather grab $(date)"
         git push origin main
-#      env: 
-#        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-#        username: github-actions
     
 
   
