@@ -25,8 +25,8 @@ ri_url <- "https://forecast.weather.gov/MapClick.php?lat=41.484&lon=-71.5522&lg=
 wat_url <-  "https://forecast.weather.gov/MapClick.php?lat=34.4335&lon=-80.8665&lg=english&&FcstType=digital"
 mur_url <- "https://forecast.weather.gov/MapClick.php?lat=34.1205&lon=-81.2645&lg=english&&FcstType=digital"
 
-url_list <- c(sun_url, aub_url, grt_url, sab_url, pan_url, ri_url, wat_url, mur_url) 
-for_data_list <- c('sun-for.csv', 'aub-for.csv', 'grt-for.csv', 'sab-for.csv', 'pan-for.csv', 'ri-for.csv', 'wat-for.csv', 'mur-for.csv') 
+url_list <- c(sun_url, aub_url, grt_url, chn_url, sab_url, pan_url, ri_url, wat_url, mur_url) 
+for_data_list <- c('sun-for.csv', 'aub-for.csv', 'grt-for.csv', 'chn-for.csv', 'sab-for.csv', 'pan-for.csv', 'ri-for.csv', 'wat-for.csv', 'mur-for.csv') 
 loc_list <- c('lat=43.3834&lon=-72.0832', 
               'lat=44.1461&lon=-70.227', 
               'lat=44.5861&lon=-69.864', 
