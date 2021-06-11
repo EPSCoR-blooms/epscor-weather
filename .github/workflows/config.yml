@@ -5,12 +5,13 @@ on:
   schedule:
     - cron: "30 6 * * *" #run everyday at utc 6:30
   push:
-    branches: main
+    branches: main #run when files updated manually
 
 #create jobs    
 jobs:
   weather: 
-    runs-on: windows-2016
+    runs-on: windows-latest
+    
     steps: 
 
     # load repo

@@ -5,6 +5,7 @@
 
 #load packages
 library(magrittr)
+library(dplyr)
 library(rvest)
 library(lubridate)
 
