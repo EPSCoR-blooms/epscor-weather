@@ -46,12 +46,19 @@ for(i in 1:length(url_list)) {
 #read in historical data
 forecast_template <- read.csv(file.path(dir,  for_data_list[i]),
                          colClasses = 'character')
-
-#read html, select table, format to dataframe
-forecast_now <- as.data.frame(html_table(html_nodes(read_html(url_list[i]), 'table')[8])) %>% 
-  rowid_to_column() %>% 
-  filter(X1 != '') %>%  #remove null rows
-  filter(X1 != 'Gust') #remove ill-formatted rows
+forecast_now = NULL
+attempt = 1 #set attempt at first attempt
+while(is.null(forecast_now) && attempt <= 3) { #repeat up to 2 more times if the html table aborts
+  #read html, select table, format to dataframe
+  Sys.sleep(5) #wait 5 seconds
+  attempt = attempt + 1
+  try(
+  forecast_now <- as.data.frame(html_table(html_nodes(read_html(url_list[i]), 'table')[8])) %>% 
+    rowid_to_column() %>% 
+    filter(X1 != '') %>%  #remove null rows
+    filter(X1 != 'Gust') #remove ill-formatted rows
+  )
+}
   
 #break down into two charts and format
 forecast_now_a <- forecast_now %>% 
@@ -94,7 +101,4 @@ forecast_now <- forecast_now %>%
 
 # print forecast in lake folder and label with date
 write.csv(forecast_now, paste0(dir, lake_list[i], '/', lake_list[i], '-forecast-', Sys.Date(), '.csv'), row.names = F)
-
-#add a rest of 10 seconds to not overload NOAA
-Sys.sleep(10)
 }

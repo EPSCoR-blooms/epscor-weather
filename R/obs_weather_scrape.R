@@ -6,6 +6,7 @@
 #load packages
 library(magrittr)
 library(rvest)
+library(lubridate)
 
 #set save directory
 dir <- 'datastore/obs_weather/'
@@ -25,33 +26,41 @@ url_list <- c(sun_url, aub_url, grt_url, ri_url, wat_url, mur_url)
 obs_data_list <- c('sun-obs.csv', 'aub-obs.csv', 'grt-obs.csv', 'ri-obs.csv', 'wat-obs.csv', 'mur-obs.csv') 
 station_list <- c('KLEB', 'KLEW', 'KWVL', 'KOQU', 'KCUB', 'KCAE') 
 
+tempnames <- c('day', 'time', "wind_mph", "vis_mi", "weather", "sky_cond", "air_temp_F", "dewpoint_F", "air_temp_max_6h_F", 
+               "air_temp_min_6h_F", "rel_hum_perc", "wind_chill_F", "heat_indx_F", "pres_alt_in", "pres_sea_mb", "precip_1hr_in", "precip_3h_in", "precip_6h_in")
 #set TZ
-Sys.setenv(TZ='Etc/GMT+5') #force TZ to EST no DST for download
+Sys.setenv(TZ='UTC') #force TZ to EST no DST for download
 
 for(i in 1:length(station_list)) {
 
 #read in historical data
 collated_weather <- read.csv(file.path(dir,  obs_data_list[i]),
-                         colClasses = 'character')
+                         colClasses = 'character') %>% 
+  mutate(datetime = as.POSIXct(datetime, tz='UTC')) %>% 
+  arrange(datetime)
+
+lastdatetime = max(collated_weather$datetime)
 
 #read html, select table, format to dataframe
 weather_now <- as.data.frame(html_table(html_nodes(read_html(url_list[i]), 'table')[4], header = T)) %>% 
-    dplyr::filter(!grepl('date', x = Date, ignore.case = T)) 
+  filter(!grepl('date', x = Date, ignore.case = T)) 
 
 #rename columns
 for(j in 1:ncol(weather_now)) {
-  names(weather_now)[j] = names(collated_weather)[j+2]
+  names(weather_now)[j] = tempnames[j]
 }
 
 #add station information and download date
 weather_now$station = paste0(station_list[i])
 weather_now$download_date = Sys.Date()
+weather_now$download_date = force_tz(weather_now$download_date)
 
 #format to proper date stamp; need to deal with end/beg of month issues
 daydiff = as.numeric(max(weather_now$day)) - as.numeric(min(weather_now$day))
 
 #initialize column with today's date
 weather_now$date = Sys.Date()
+weather_now$date = force_tz(weather_now$date)
 
 # run loop for date
 for(k in 1:nrow(weather_now)) {
@@ -66,14 +75,20 @@ for(k in 1:nrow(weather_now)) {
   }
 }
 
+Sys.setenv(TZ='UTC') #force TZ to EST no DST for download
+
 # mutate all columns to as.character
 weather_now <- weather_now %>% 
-  dplyr::mutate(download_date = as.character(download_date),
-         date = as.character(date))
+  mutate(download_date = as.character(download_date),
+         date = as.character(date),
+         datetime = as.POSIXct(paste(date, time, sep = ' '), tz= 'UTC')) %>% 
+  filter(datetime > lastdatetime) %>% 
+  select(-day)
 str(weather_now)
 
 #join the data together with an indicator of download date, in case data changes
-collated_weather <- dplyr::full_join(collated_weather, weather_now)
+collated_weather <- full_join(collated_weather, weather_now) %>% 
+  mutate(datetime = as.character(datetime))
 write.csv(collated_weather, file.path(dir, paste0(obs_data_list[i])), row.names = F)
 
 }
