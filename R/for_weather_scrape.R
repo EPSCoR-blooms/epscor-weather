@@ -12,32 +12,39 @@ library(dplyr)
 #set save directory
 dir <- 'datastore/for_weather/'
 tmpdir <- 'datastore/for_weather/tmp/'
+locdir <- 'datastore/loc_info/'
 
 #read lat/longs
-
+lat_long <- read.csv(file.path(locdir, 'epscor_shapefile_nhd.csv')) %>% 
+  filter(EB_Lake_ID != 'YAG') %>% 
+  filter(EB_Lake_ID != 'LNG')
+  
 #set url
-sun_url <- "https://forecast.weather.gov/MapClick.php?lat=43.3834&lon=-72.0832&lg=english&&FcstType=digital"
-aub_url <- "https://forecast.weather.gov/MapClick.php?lat=44.1461&lon=-70.227&lg=english&&FcstType=digital"
-grt_url <- "https://forecast.weather.gov/MapClick.php?lat=44.5861&lon=-69.864&lg=english&&FcstType=digital"
-chn_url <- "https://forecast.weather.gov/MapClick.php?lat=44.4473&lon=-69.6053&unit=0&lg=english&FcstType=digital"
-sab_url <- "https://forecast.weather.gov/MapClick.php?lat=44.1152&lon=-70.1027&lg=english&&FcstType=digital"
-pan_url <- "https://forecast.weather.gov/MapClick.php?lat=43.9261&lon=-70.468&lg=english&&FcstType=digital"
-ri_url <- "https://forecast.weather.gov/MapClick.php?lat=41.484&lon=-71.5522&lg=english&&FcstType=digital"
-wat_url <-  "https://forecast.weather.gov/MapClick.php?lat=34.4335&lon=-80.8665&lg=english&&FcstType=digital"
-mur_url <- "https://forecast.weather.gov/MapClick.php?lat=34.1205&lon=-81.2645&lg=english&&FcstType=digital"
+aub_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'AUB'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'AUB'], "&lg=english&&FcstType=digital")
+bar_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'BAR'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'BAR'], "&lg=english&&FcstType=digital")
+chn_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'CHN'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'CHN'], "&lg=english&&FcstType=digital")
+grt_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'GRT'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'GRT'], "&lg=english&&FcstType=digital")
+ind_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'IND'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'IND'], "&lg=english&&FcstType=digital")
+mur_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'MUR'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'MUR'], "&lg=english&&FcstType=digital")
+pan_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'PAN'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'PAN'], "&lg=english&&FcstType=digital")
+sab_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'SAB'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'SAB'], "&lg=english&&FcstType=digital")
+sun_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'SUN'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'SUN'], "&lg=english&&FcstType=digital")
+wat_url <- paste0("https://forecast.weather.gov/MapClick.php?lat=", lat_long$lat_dd[lat_long$EB_Lake_ID == 'WAT'], "&lon=", lat_long$long_dd[lat_long$EB_Lake_ID == 'WAT'], "&lg=english&&FcstType=digital")
 
-url_list <- c(sun_url, aub_url, grt_url, chn_url, sab_url, pan_url, ri_url, wat_url, mur_url) 
-for_data_list <- c('sun-for.csv', 'aub-for.csv', 'grt-for.csv', 'chn-for.csv', 'sab-for.csv', 'pan-for.csv', 'ri-for.csv', 'wat-for.csv', 'mur-for.csv') 
-loc_list <- c('lat=43.3834&lon=-72.0832', 
-              'lat=44.1461&lon=-70.227', 
-              'lat=44.5861&lon=-69.864', 
-              'lat=44.4473&lon=-69.6053',
-              'lat=44.1152&lon=-70.1027', 
-              'lat=43.9261&lon=-70.468', 
-              'lat=41.484&lon=-71.5522', 
-              'lat=34.4335&lon=-80.8665', 
-              'lat=34.1205&lon=-81.2645')
-lake_list <- c('sun', 'aub', 'grt', 'chn', 'sab', 'pan', 'ri', 'wat', 'mur')
+url_list <- c(aub_url, bar_url, chn_url, grt_url, ind_url, mur_url, pan_url, sab_url, sun_url, wat_url) 
+
+for_data_list <- list.files(tmpdir)
+
+lat_dd <- as.list(lat_long %>% 
+                    arrange(EB_Lake_ID) %>% 
+                    select(lat_dd))$lat_dd
+long_dd <- as.list(lat_long %>% 
+                    arrange(EB_Lake_ID) %>% 
+                    select(long_dd))$long_dd
+
+lake_list <- as.list(lat_long %>% 
+  select(EB_Lake_ID) %>% 
+  arrange(EB_Lake_ID))$EB_Lake_ID
 
 #set TZ
 Sys.setenv(TZ='Etc/GMT+5') #force TZ to EST no DST for download
@@ -69,7 +76,7 @@ forecast_now_a <- forecast_now %>%
   as.data.frame() 
 forecast_now_a <- forecast_now_a[-1,]
 for(j in 1:ncol(forecast_now_a)) {
-  names(forecast_now_a)[j] = names(forecast_template)[j+2]
+  names(forecast_now_a)[j] = names(forecast_template)[j+3]
 }
 
 forecast_now_b <- forecast_now %>% 
@@ -79,7 +86,7 @@ forecast_now_b <- forecast_now %>%
   as.data.frame() 
 forecast_now_b <- forecast_now_b[-1,]
 for(j in 1:ncol(forecast_now_b)) {
-  names(forecast_now_b)[j] = names(forecast_template)[j+2]
+  names(forecast_now_b)[j] = names(forecast_template)[j+3]
 }
 
 forecast_now <- full_join(forecast_now_a, forecast_now_b) 
@@ -96,8 +103,9 @@ for(l in 1:nrow(forecast_now)) {
 # format date and add additional information
 forecast_now <- forecast_now %>% 
   mutate(date = as.character(as.Date(paste(date, format(Sys.Date(), '%Y'), sep = '-'), format = '%m/%d-%Y'))) %>% 
-  mutate(loc = loc_list[i]) %>% 
-  mutate(lake = lake_list[i]) %>% 
+  mutate(lat_dd = as.character(lat_dd[i])) %>% 
+  mutate(long_dd = as.character(long_dd[i])) %>% 
+  mutate(EB_Lake_ID = lake_list[i]) %>% 
   full_join(forecast_template, .)
 
 # print forecast in lake folder and label with date
