@@ -5,6 +5,8 @@ Repository contact: B. Steele (steeleb@caryinstitute.org, bsteele@bates.edu)
 
 These data are intended for use by members of the EPSCoR project, please attribute data and code properly. If you are unsure how to attribute, contact the creator of these code and data, B Steele (steeleb@caryinstitute.org).
 
+** As of Nov 2021, gitactions were stopped. Future iterations should grab observed weather data from rnoaa package. Data should be stored with CV, and in metric units. Will need a major overhaul before redeploying gitactions. **
+
 [![gather weather daily](https://github.com/steeleb/epscor-weather/actions/workflows/config.yml/badge.svg)](https://github.com/steeleb/epscor-weather/actions/workflows/config.yml)
 
 ## Folder Structure
